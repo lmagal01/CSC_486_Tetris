@@ -25,6 +25,7 @@ public class ViewPanel extends JPanel implements PropertyChangeListener {
 //                (int) (Math.random() * 256),
 //                (int) (Math.random() * 256)));
         double[] testArray = {-0.5, -0.5, -0.5};
+        // implement array logic later
         label.setBackground(zoneColor(zoneFinder(testArray)));
     }
 
