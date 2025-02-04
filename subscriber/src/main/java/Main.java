@@ -67,29 +67,4 @@ public class Main extends JFrame {
         main.setVisible(true);
         main.setTitle("Subscriber");
     }
-
-    public int zoneFinder(double[] padArray) {
-        int zone = 0;
-        double p = padArray[0];
-        double a = padArray[1];
-        double d = padArray[2];
-        if (p > 0 && a > 0 && d > 0)
-            zone = 1;
-        else if (p > 0 && a > 0 && d < 0)
-            zone = 2;
-        else if (p > 0 && a < 0 && d > 0)
-            zone = 3;
-        else if (p > 0 && a < 0 && d < 0)
-            zone = 4;
-        else if (p < 0 && a > 0 && d > 0)
-            zone = 5;
-        else if (p < 0 && a > 0 && d < 0)
-            zone = 6;
-        else if (p < 0 && a < 0 && d > 0)
-            zone = 7;
-        else if (p < 0 && a < 0 && d < 0)
-            zone = 8;
-        return zone;
-    }
-
 }
