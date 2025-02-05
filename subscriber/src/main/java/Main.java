@@ -1,16 +1,13 @@
+
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Main class is a JFrame that contains a JMenuBar, a ViewPanel and a StatusBar.
- * It also contains an Engine that is a Runnable.
- *
- * @author javiergs
- * @version 1.0
- */
+
 public class Main extends JFrame {
 
     private Engine engine;
+
+    private JTextArea statusArea;
 
     private JMenuBar createMenuBar() {
         // controller
@@ -22,6 +19,13 @@ public class Main extends JFrame {
         JMenuItem aboutMenuItem = new JMenuItem("About");
         JMenuItem startMenuItem = new JMenuItem("Start");
         JMenuItem stopMenuItem = new JMenuItem("Stop");
+
+        startMenuItem.setAccelerator(KeyStroke.getKeyStroke
+                ('F', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        stopMenuItem.setAccelerator(KeyStroke.getKeyStroke
+                ('D', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+
+
         connectMenu.add(startMenuItem);
         connectMenu.add(stopMenuItem);
         helpMenu.add(aboutMenuItem);
@@ -42,21 +46,47 @@ public class Main extends JFrame {
         setJMenuBar(createMenuBar());
         ViewPanel centralPanel = new ViewPanel();
         StatusBar viewStatusBar = new StatusBar();
+        statusArea = new JTextArea(5, 30);
+        statusArea.setPreferredSize(new Dimension(800, 100));
+
+        statusArea.setEditable(false);
+
+        JPanel statusPanel = new JPanel(new BorderLayout());
+        statusPanel.add(viewStatusBar, BorderLayout.NORTH);
+        statusPanel.add(statusArea, BorderLayout.SOUTH);
+
         setLayout(new BorderLayout());
         add(centralPanel, BorderLayout.CENTER);
-        add(viewStatusBar, BorderLayout.SOUTH);
+        add(statusPanel, BorderLayout.SOUTH);
         Blackboard.getInstance().addPropertyChangeListener(centralPanel);
         Blackboard.getInstance().addPropertyChangeListener(viewStatusBar);
+
+    }
+
+    public void logMessage(String message) {
+        statusArea.append(message + "\n");
     }
 
     public void about() {
         // view
-        JOptionPane.showMessageDialog(this, "About Subscriber");
+        JOptionPane.showMessageDialog(this,
+                "Connect: Establishes a connection to the broker "+"\n" +
+                        "Stop: End connection to broker");
     }
 
     public void pauseThread(boolean b) {
-        // controller
-        engine.pause(b);
+        try {
+            // controller
+            engine.pause(b);
+            if (b) {
+                logMessage("Disconnected from broker.");
+            } else {
+                logMessage("Connected to broker.");
+            }
+        } catch(Exception e) {
+            logMessage("Error: Unable to connect. Please try again or check connections.");
+
+        }
     }
 
     public static void main(String[] args) {
