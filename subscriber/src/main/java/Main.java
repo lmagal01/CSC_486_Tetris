@@ -1,44 +1,38 @@
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Main class is a JFrame that contains a JMenuBar, a ViewPanel and a StatusBar.
- * It also contains an Engine that is a Runnable.
- *
- * @author javiergs
- * @version 1.0
- */
+
 public class Main extends JFrame {
 
-    private Engine engine;
+    private Engine engine; // Subscriber engine
 
     private JMenuBar createMenuBar() {
-        // controller
+        // Controller
         Controller controller = new Controller(this);
-        // construct
+
+        // Construct menu
         JMenuBar menuBar = new JMenuBar();
         JMenu connectMenu = new JMenu("Connection");
         JMenu helpMenu = new JMenu("Help");
+
         JMenuItem aboutMenuItem = new JMenuItem("About");
         JMenuItem startMenuItem = new JMenuItem("Start");
         JMenuItem stopMenuItem = new JMenuItem("Stop");
+
         connectMenu.add(startMenuItem);
         connectMenu.add(stopMenuItem);
         helpMenu.add(aboutMenuItem);
+
         startMenuItem.addActionListener(controller);
         stopMenuItem.addActionListener(controller);
         aboutMenuItem.addActionListener(controller);
+
         menuBar.add(connectMenu);
         menuBar.add(helpMenu);
         return menuBar;
     }
 
     public Main() {
-        // model
-        engine = new Engine();
-        Thread modelThread = new Thread(engine);
-        modelThread.start();
-        // construct
         setJMenuBar(createMenuBar());
         ViewPanel centralPanel = new ViewPanel();
         StatusBar viewStatusBar = new StatusBar();
@@ -48,15 +42,30 @@ public class Main extends JFrame {
         Blackboard.getInstance().addPropertyChangeListener(centralPanel);
         Blackboard.getInstance().addPropertyChangeListener(viewStatusBar);
     }
-
-    public void about() {
-        // view
-        JOptionPane.showMessageDialog(this, "About Subscriber");
+//pauseThread function to start new Engine and Thread
+    public void pauseThread(boolean startSubscriber) {
+        if (!startSubscriber) {
+            if (engine == null) {
+                engine = new Engine();
+                Thread engineThread = new Thread(engine);
+                engineThread.start();
+                System.out.println("Subscriber started.");
+            } else {
+                System.out.println("Subscriber is already running.");
+            }
+        } else {
+            if (engine != null) {
+                engine.stop(true); // Properly stop the subscriber
+                engine = null; // Reset engine after stopping
+                System.out.println("Subscriber stopped.");
+            } else {
+                System.out.println("Subscriber is not running.");
+            }
+        }
     }
 
-    public void pauseThread(boolean b) {
-        // controller
-        engine.pause(b);
+    public void about() {
+        JOptionPane.showMessageDialog(this, "MQTT Subscriber About");
     }
 
     public static void main(String[] args) {
@@ -65,6 +74,6 @@ public class Main extends JFrame {
         main.setLocationRelativeTo(null);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setVisible(true);
-        main.setTitle("Subscriber");
+        main.setTitle("MQTT Subscriber");
     }
 }

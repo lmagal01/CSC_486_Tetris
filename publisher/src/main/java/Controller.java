@@ -20,12 +20,18 @@ public class Controller implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("About")) {
             viewMain.about();
-        } else if (e.getActionCommand().equals("Start")) {
+        }
+        else if (e.getActionCommand().equals("Select File")) {
+            System.out.println("Selecting file...");
+            viewMain.selectFile();
+        }
+        else if (e.getActionCommand().equals("Start")) {
             System.out.println("Start");
             viewMain.pauseThread(false);
         } else if (e.getActionCommand().equals("Stop")) {
             System.out.println("Stop");
             viewMain.pauseThread(true);
         }
-    }
+
+        }
 }
