@@ -51,7 +51,7 @@ public class Main extends JFrame {
 
     public void about() {
         // view
-        JOptionPane.showMessageDialog(this, "About Skeleton");
+        JOptionPane.showMessageDialog(this, "About Subscriber");
     }
 
     public void pauseThread(boolean b) {
@@ -65,7 +65,6 @@ public class Main extends JFrame {
         main.setLocationRelativeTo(null);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setVisible(true);
-        main.setTitle("Skeleton");
+        main.setTitle("Subscriber");
     }
-
 }
