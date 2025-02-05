@@ -1,11 +1,5 @@
 
-/**
- * This class represents a sample model for the application.
- * It is executed in a separate thread and updates the blackboard with the current time.
- *
- * @author javiergs
- * @version 1.0
- */
+
 public class Engine implements Runnable {
 
     private boolean wait = true;
