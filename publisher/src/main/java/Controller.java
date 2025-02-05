@@ -1,13 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Controller class is an ActionListener that listens to the JMenuItems.
- * It calls the methods about, pauseThread of the Main class.
- *
- * @author javiergs
- * @version 1.0
- */
 public class Controller implements ActionListener {
 
     private Main viewMain;
@@ -18,14 +11,26 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("About")) {
-            viewMain.about();
-        } else if (e.getActionCommand().equals("Start")) {
-            System.out.println("Start");
-            viewMain.pauseThread(false);
-        } else if (e.getActionCommand().equals("Stop")) {
-            System.out.println("Stop");
-            viewMain.pauseThread(true);
+        try {
+            if (e.getActionCommand().equals("About")) {
+                viewMain.about();
+            } else if (e.getActionCommand().equals("Start")) {
+                viewMain.logMessage("Attempting to connect...");
+                System.out.println("Start");
+                viewMain.pauseThread(false);
+            } else if (e.getActionCommand().equals("Stop")) {
+                System.out.println("Stop");
+                viewMain.logMessage("Disconnecting...");
+                viewMain.pauseThread(true);
+            }
+        } catch (Exception ex){
+            viewMain.logMessage("Error: " + getErrorMessage(ex));
         }
-    }
+        }
+    private String getErrorMessage(Exception e) {
+        if (e.getMessage().contains("timeout")) {
+            return "Connection timed out. Please try again.";
+        } else {
+            return "An unexpected error occurred. Check status or restart application.";
+        }}
 }
