@@ -8,12 +8,20 @@ public class ViewPanel extends JPanel implements PropertyChangeListener {
     private JTextArea textArea;
     private JLabel label;
 
+    private JPanel[] zonePanels = new JPanel[8];
+
+
     public ViewPanel() {
-        setLayout(new GridLayout(1, 2));
+        setLayout(new GridLayout(2, 4));
         textArea = new JTextArea();
         label = new JLabel();
         add(textArea);
         add(label);
+
+        for (int i = 0; i < 8; i++) {
+            zonePanels[i] = new JPanel();
+            add(zonePanels[i]);
+        }
     }
 
     @Override
@@ -24,9 +32,12 @@ public class ViewPanel extends JPanel implements PropertyChangeListener {
 //                (int) (Math.random() * 256),
 //                (int) (Math.random() * 256),
 //                (int) (Math.random() * 256)));
-        double[] testArray = {-0.5, -0.5, -0.5};
+        double[] testArray = {0.5, 0.5, 0.5};
         // implement array logic later
-        label.setBackground(zoneColor(zoneFinder(testArray)));
+
+        int zone = zoneFinder(testArray);
+        label.setBackground(zoneColor(zone));
+        zonePanels[zone - 1].setBackground(zoneColor(zone));
     }
 
     private int zoneFinder(double[] padArray) {
