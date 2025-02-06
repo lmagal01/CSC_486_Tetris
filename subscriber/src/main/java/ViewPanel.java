@@ -12,32 +12,33 @@ public class ViewPanel extends JPanel implements PropertyChangeListener {
 
 
     public ViewPanel() {
-        setLayout(new GridLayout(2, 4));
-        textArea = new JTextArea();
-        label = new JLabel();
-        add(textArea);
-        add(label);
+        setLayout(new GridLayout(3, 4));
+
 
         for (int i = 0; i < 8; i++) {
             zonePanels[i] = new JPanel();
             add(zonePanels[i]);
         }
+        textArea = new JTextArea();
+        label = new JLabel();
+        add(textArea);
+        add(label);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         textArea.append(evt.getNewValue().toString() + "\n");
         label.setOpaque(true);
-//        label.setBackground(new Color(
-//                (int) (Math.random() * 256),
-//                (int) (Math.random() * 256),
-//                (int) (Math.random() * 256)));
-        double[] testArray = {0.5, 0.5, 0.5};
-        // implement array logic later
 
-        int zone = zoneFinder(testArray);
-        label.setBackground(zoneColor(zone));
-        zonePanels[zone - 1].setBackground(zoneColor(zone));
+        double[] testArray = {0.5, -0.5, -0.5};
+        double[] eyeTestLeft = {0.913, 0.354};
+        double[] eyeTestRight = {0.885, 0.388};
+//        int zone = zoneFinder(testArray);
+        int zoneLeft = eyeFinder(eyeTestLeft);
+        int zoneRight = eyeFinder(eyeTestRight);
+//        zonePanels[zone - 1].setBackground(zoneColor(zone));
+        zonePanels[zoneLeft - 1].setBackground(zoneColor(zoneLeft));
+        zonePanels[zoneRight - 1].setBackground(zoneColor(zoneRight));
     }
 
     private int zoneFinder(double[] padArray) {
@@ -83,5 +84,31 @@ public class ViewPanel extends JPanel implements PropertyChangeListener {
             return Color.CYAN;
         else
             return Color.BLACK;
+    }
+
+    private int eyeFinder(double[] eyePos) {
+        double x = eyePos[0];
+        double y = eyePos[1];
+        if (y >= 0.5) {
+            if (x <= 0.25)
+                return 1;
+            else if (x <= 0.5)
+                return 2;
+            else if (x <= 0.75)
+                return 3;
+            else
+                return 4;
+        }
+        else {
+            if (x <= 0.25)
+                return 5;
+            else if (x <= 0.5)
+                return 6;
+            else if (x <= 0.75)
+                return 7;
+            else
+                return 8;
+        }
+
     }
 }
