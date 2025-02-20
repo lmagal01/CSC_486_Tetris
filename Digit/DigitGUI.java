@@ -13,17 +13,17 @@ public class DigitGUI extends JFrame {
     private int currentIndex = 0;
     private int currentDigitLength = 4;
     private Timer timer;
+    private int remainingTime = 10;
 
     public DigitGUI() {
         setTitle("Digit Game");
-        setSize(500, 300);
+        setSize(1000, 600);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         numberLabel = new JLabel("Number: ");
         inputField = new JTextField(20);
         nextButton = new JButton("Submit");
-
 
         Font largeFont = new Font("Arial", Font.PLAIN, 30);
         numberLabel.setFont(largeFont);
@@ -42,27 +42,23 @@ public class DigitGUI extends JFrame {
     }
 
     private void handleNextButton() {
-
         String userInput = inputField.getText().trim();
-
 
         StringBuilder numberString = new StringBuilder();
         for (int number : numbers) {
             numberString.append(number).append(" ");
         }
 
-
         if (userInput.equals(numberString.toString().trim())) {
             System.out.println("Correct! User Input: " + userInput);
-            currentIndex = 0;
+            currentIndex = 0;  // Reset index for the new set
             inputField.setText("");
 
-
-            if (currentDigitLength < 8) {
+            if (currentDigitLength < 10) {
                 currentDigitLength++;
                 generateNewNumbers();
             } else {
-                JOptionPane.showMessageDialog(this, "Game Over!");
+                JOptionPane.showMessageDialog(this, "You won!");
                 System.exit(0);
             }
         } else {
@@ -83,15 +79,21 @@ public class DigitGUI extends JFrame {
             numberString.append(numbers[i]).append(" ");
         }
 
-        numberLabel.setText("Enter the digits: " + numberString.toString());
+        numberLabel.setText("Remmeber the digits: " + numberString.toString() + " (Time remaining: 15)");
 
-        timer = new Timer(10000, new ActionListener() {
+        remainingTime = 10;
+        timer = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                numberLabel.setText("Enter the digits: ");
-                inputField.setEnabled(true);
+                if (remainingTime > 0) {
+                    remainingTime--;
+                    numberLabel.setText("Enter the digits: " + numberString.toString() + " (Time remaining: " + remainingTime + ")");
+                } else {
+                    numberLabel.setText("Enter the digits: ");
+                    inputField.setEnabled(true);
+                    ((Timer) e.getSource()).stop();
+                }
             }
         });
-        timer.setRepeats(false);
         timer.start();
 
         inputField.setEnabled(false);
