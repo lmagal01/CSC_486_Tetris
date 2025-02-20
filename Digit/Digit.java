@@ -1,6 +1,8 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Digit {
+
     public static void main(String[] args) {
         Random random = new Random();
         int[] numbers = new int[4];
@@ -12,7 +14,10 @@ public class Digit {
         for (int number : numbers) {
             System.out.println(number);
         }
-        System.out.println("Done");
+        for (int i = 0; i < numbers.length; i++) {
+            input();
+        }
+        System.out.println("Done 4");
         five();
     }
 
@@ -27,7 +32,10 @@ public class Digit {
         for (int number : numbers) {
             System.out.println(number);
         }
-        System.out.println("Done");
+        for (int i = 0; i < numbers.length; i++) {
+            input();
+        }
+        System.out.println("Done 5");
         six();
     }
 
@@ -42,7 +50,10 @@ public class Digit {
         for (int number : numbers) {
             System.out.println(number);
         }
-        System.out.println("Done");
+        for (int i = 0; i < numbers.length; i++) {
+            input();
+        }
+        System.out.println("Done 6");
         seven();
     }
 
@@ -57,7 +68,10 @@ public class Digit {
         for (int number : numbers) {
             System.out.println(number);
         }
-        System.out.println("Done");
+        for (int i = 0; i < numbers.length; i++) {
+            input();
+        }
+        System.out.println("Done 7");
         eight();
     }
 
@@ -71,7 +85,16 @@ public class Digit {
         for (int number : numbers) {
             System.out.println(number);
         }
-        System.out.println("Done");
+        for (int i = 0; i < numbers.length; i++) {
+            input();
+        }
+        System.out.println("Done 8");
+    }
 
+    public static void input() {
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Enter next digit");
+
+        String digitRead = myObj.nextLine();
     }
 }
