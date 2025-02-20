@@ -15,6 +15,9 @@ public class DigitGUI extends JFrame {
     private Timer timer;
     private int remainingTime = 10;
 
+    private ActionLogger actionLogger;
+    private long questionStartTime;
+    private Timer questionTimer;
     public DigitGUI() {
         setTitle("Digit Game");
         setSize(1000, 600);
@@ -39,6 +42,16 @@ public class DigitGUI extends JFrame {
         add(nextButton);
 
         generateNewNumbers();
+        actionLogger = new ActionLogger();
+    }
+
+
+    private void startQuestionTimer() {
+        questionTimer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        questionTimer.start();
     }
 
     private void handleNextButton() {
@@ -47,6 +60,14 @@ public class DigitGUI extends JFrame {
         StringBuilder numberString = new StringBuilder();
         for (int number : numbers) {
             numberString.append(number).append(" ");
+        }
+
+        actionLogger.logAction("User entered: " + userInput);
+        long timeTaken = System.currentTimeMillis() - questionStartTime;
+        actionLogger.logAction("Time taken to answer: " + timeTaken  / 1000.0 + " seconds");
+
+        if (questionTimer != null && questionTimer.isRunning()) {
+            questionTimer.stop();
         }
 
         if (userInput.equals(numberString.toString().trim())) {
@@ -81,6 +102,7 @@ public class DigitGUI extends JFrame {
 
         numberLabel.setText("Remmeber the digits: " + numberString.toString() + " (Time remaining: 15)");
 
+        questionStartTime = System.currentTimeMillis();
         remainingTime = 10;
         timer = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
