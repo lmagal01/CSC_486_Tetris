@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,6 +27,14 @@ public class Controller implements ActionListener {
         } else if (e.getActionCommand().equals("Stop")) {
             System.out.println("Stop");
             viewMain.pauseThread(true);
+        } else if (e.getActionCommand().equals("Start Stroop Test")) {
+            System.out.println("Starting Stroop Test...");
+            startStroopTest();
         }
     }
-}
+
+        private void startStroopTest()
+        {
+            SwingUtilities.invokeLater(() -> new StroopTest());
+        }
+    }
