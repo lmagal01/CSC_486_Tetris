@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class Main extends JFrame {
 
     private Engine engine; // Subscriber engine
+    private CircleApp circleApp;  // Reference to CircleApp
 
     private JMenuBar createMenuBar() {
         // Controller
@@ -33,20 +33,25 @@ public class Main extends JFrame {
     }
 
     public Main() {
+        // Initialize CircleApp
+        circleApp = new CircleApp();
+
+        // Initialize Engine with CircleApp
+        engine = new Engine(circleApp);
+
         setJMenuBar(createMenuBar());
-        ViewPanel centralPanel = new ViewPanel();
-        StatusBar viewStatusBar = new StatusBar();
         setLayout(new BorderLayout());
-        add(centralPanel, BorderLayout.CENTER);
-        add(viewStatusBar, BorderLayout.SOUTH);
-        Blackboard.getInstance().addPropertyChangeListener(centralPanel);
-        Blackboard.getInstance().addPropertyChangeListener(viewStatusBar);
+        add(circleApp, BorderLayout.CENTER);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
-//pauseThread function to start new Engine and Thread
+
     public void pauseThread(boolean startSubscriber) {
         if (!startSubscriber) {
             if (engine == null) {
-                engine = new Engine();
+                engine = new Engine(circleApp);
                 Thread engineThread = new Thread(engine);
                 engineThread.start();
                 System.out.println("Subscriber started.");
@@ -69,64 +74,6 @@ public class Main extends JFrame {
     }
 
     public static void main(String[] args) {
-        Main main = new Main();
-        main.setSize(800, 600);
-        main.setLocationRelativeTo(null);
-        main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        main.setVisible(true);
-        main.setTitle("MQTT Subscriber");
+        new Main();  // Run the application
     }
-
-
-    // CircleApp
-    private int x = 750, y = 500, diameter = 100;
-    private Color circleColor = Color.RED;
-
-    public void CircleApp() {
-        JFrame frame = new JFrame("Circle Application");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1800, 900);
-        frame.add(this);
-        frame.setVisible(true);
-    }
-
-    public void changePosition(int newX, int newY) {
-        this.x = newX;
-        this.y = newY;
-        repaint();
-    }
-
-    public void changeSize(int newDiameter) {
-        this.diameter = newDiameter;
-        repaint();
-    }
-
-    public void changeColor(Color newColor) {
-        this.circleColor = newColor;
-        repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(circleColor);
-        g.fillOval(x, y, diameter, diameter);
-    }
-
-    public static void circleMain(String[] args) {
-        CircleApp app = new CircleApp();
-
-        // Example usage
-        try {
-            Thread.sleep(1000);
-            app.changePosition(100, 150);
-            Thread.sleep(1000);
-            app.changeSize(150);
-            Thread.sleep(1000);
-            app.changeColor(Color.BLUE);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
