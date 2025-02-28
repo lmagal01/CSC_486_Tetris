@@ -6,12 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="NielsenSkeleton (2)" />
-        <module name="NielsenSkeleton (1)" />
+        <module name="publisher" />
+        <module name="subscriber" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="NielsenSkeleton" target="21" />
+      <module name="NielsenSkeleton (1)" target="21" />
+      <module name="NielsenSkeleton (2)" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
